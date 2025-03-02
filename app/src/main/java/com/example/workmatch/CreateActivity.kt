@@ -19,6 +19,7 @@ class CreateActivity : AppCompatActivity() {
         binding = ActivityCreateBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Configura a Toolbar como a barra de navegação
         val toolbar: Toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -28,6 +29,7 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
+    // Método que lida com os cliques nos itens do menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -38,6 +40,7 @@ class CreateActivity : AppCompatActivity() {
         }
     }
 
+    // Método que volta para a MainActivity e toca um efeito sonoro
     private fun voltarParaMain() {
         var mediaPlayer = MediaPlayer.create(this, R.raw.init)
         mediaPlayer.start()
@@ -46,7 +49,9 @@ class CreateActivity : AppCompatActivity() {
         finish()
     }
 
+    // Método para cadastrar a vaga de emprego
     private fun cadastrarVaga() {
+        // Obtém os dados preenchidos nos campos de texto
         val nomeVaga = binding.edtNomeVaga.text.toString()
         val setor = binding.edtSetor.text.toString()
         val salario = binding.edtSalario.text.toString().toDoubleOrNull() ?: 0.0
@@ -55,6 +60,7 @@ class CreateActivity : AppCompatActivity() {
         val nomeEmpresa = binding.edtNomeEmpresa.text.toString()
 
         if (nomeVaga.isNotEmpty() && setor.isNotEmpty()) {
+            // Cria o objeto Vaga com os dados informados
             val vaga = Vaga(nome = nomeVaga, setor = setor, salario = salario, modeloTrabalho = modeloTrabalho, jornadaTrabalho = jornadaTrabalho, nomeEmpresa = nomeEmpresa)
 
             val dbHelper = DBHelper(this)

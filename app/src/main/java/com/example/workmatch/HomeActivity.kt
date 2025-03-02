@@ -23,12 +23,14 @@ class HomeActivity : AppCompatActivity() {
         binding.btnStart.setOnClickListener {
             mediaPlayer.start()
 
+            // Cria um Intent para navegar para a MainActivity
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
 
+    // Método chamado quando a Activity é destruída
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()

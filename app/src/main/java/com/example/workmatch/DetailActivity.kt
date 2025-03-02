@@ -22,6 +22,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Configura a Toolbar como a barra de navegação
         val toolbar: Toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -35,11 +36,11 @@ class DetailActivity : AppCompatActivity() {
             finish()
         }
 
-        // Configurar clique dos botões
-        binding.btnEditarVaga.setOnClickListener { editarVaga() }
-        binding.btnDeletarVaga.setOnClickListener { confirmarExclusaoVaga() }
+        binding.btnEditarVaga.setOnClickListener { editarVaga() }  // Ação para editar a vaga
+        binding.btnDeletarVaga.setOnClickListener { confirmarExclusaoVaga() }  // Ação para excluir a vaga
     }
 
+    // Método que lida com os cliques nos itens do menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -50,11 +51,13 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    // Carrega os detalhes da vaga a partir do banco de dados usando o ID da vaga
     private fun carregarDetalhesVaga(vagaId: Long) {
         val dbHelper = DBHelper(this)
         val vaga = dbHelper.getVagaById(vagaId)
 
         vaga?.let {
+            // Exibe os detalhes da vaga nos campos correspondentes
             binding.tvNomeVaga.text = it.nome
             binding.tvSetor.text = it.setor
             binding.tvSalario.text = "R$ ${it.salario}"
@@ -67,14 +70,14 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    // Ir para a tela de edição
+    // Método para editar a vaga, redirecionando para a EditActivity
     private fun editarVaga() {
         val intent = Intent(this, EditActivity::class.java)
         intent.putExtra("vaga_id", vagaId)
         startActivity(intent)
     }
 
-    // Exibir diálogo de confirmação antes de excluir
+    // Exibe um modal de confirmação antes de excluir a vaga
     private fun confirmarExclusaoVaga() {
         AlertDialog.Builder(this)
             .setTitle("Confirmar Exclusão")
@@ -86,7 +89,6 @@ class DetailActivity : AppCompatActivity() {
             .show()
     }
 
-    // Deletar a vaga do banco e finalizar a Activity
     private fun deletarVaga() {
         val dbHelper = DBHelper(this)
         val sucesso = dbHelper.deleteVaga(vagaId)
@@ -97,7 +99,7 @@ class DetailActivity : AppCompatActivity() {
             mediaPlayer.start()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-            finish() // Fecha a tela após exclusão
+            finish()
         } else {
             val mediaPlayer = MediaPlayer.create(this, R.raw.notification)
             mediaPlayer.start()

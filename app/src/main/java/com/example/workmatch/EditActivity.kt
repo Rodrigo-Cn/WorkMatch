@@ -12,7 +12,7 @@ import com.example.workmatch.databinding.ActivityEditBinding
 class EditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditBinding
-    private var vagaId: Long = -1 // ID da vaga que será editada
+    private var vagaId: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,19 +20,18 @@ class EditActivity : AppCompatActivity() {
         binding = ActivityEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Configura a Toolbar como a barra de navegação
         val toolbar: Toolbar = binding.toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Recupera o ID da vaga da Intent
         vagaId = intent.getLongExtra("vaga_id", -1)
 
         if (vagaId != -1L) {
-            // Busca a vaga pelo ID
             val dbHelper = DBHelper(this)
             val vaga = dbHelper.getVagaById(vagaId)
 
-            // Preenche os campos com os dados da vaga
+            // Preenche os campos de edição com os dados da vaga
             if (vaga != null) {
                 binding.edtNomeVaga.setText(vaga.nome)
                 binding.edtSetor.setText(vaga.setor)
@@ -43,11 +42,13 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
+        // Configura o clique do botão para editar a vaga
         binding.btnEditarVaga.setOnClickListener {
             editarVaga()
         }
     }
 
+    // Método que lida com os cliques nos itens do menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -58,6 +59,7 @@ class EditActivity : AppCompatActivity() {
         }
     }
 
+    // Função para voltar para a MainActivity
     private fun voltarParaMain() {
         var mediaPlayer = MediaPlayer.create(this, R.raw.init)
         mediaPlayer.start()
@@ -66,7 +68,9 @@ class EditActivity : AppCompatActivity() {
         finish()
     }
 
+    // Função que trata a edição da vaga
     private fun editarVaga() {
+        // Recupera os dados dos campos de entrada
         val nomeVaga = binding.edtNomeVaga.text.toString()
         val setor = binding.edtSetor.text.toString()
         val salario = binding.edtSalario.text.toString().toDoubleOrNull() ?: 0.0
@@ -91,7 +95,7 @@ class EditActivity : AppCompatActivity() {
             val mediaPlayer = MediaPlayer.create(this, R.raw.notification)
             mediaPlayer.start()
             Toast.makeText(this, "Vaga editada com sucesso!", Toast.LENGTH_SHORT).show()
-            voltarParaMain()
+            voltarParaMain()  // Volta para a MainActivity
         } else {
             val mediaPlayer = MediaPlayer.create(this, R.raw.notification)
             mediaPlayer.start()
