@@ -1,5 +1,6 @@
 package com.example.workmatch
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         val vagasList = dbHelper.getAllVagas()
 
         vagaAdapter = VagaAdapter(vagasList) { vaga ->
+            val mediaPlayer = MediaPlayer.create(this, R.raw.notification)
+            mediaPlayer.start()
             val intent = Intent(this, DetailActivity::class.java)
             intent.putExtra("vaga_id", vaga.id)
             startActivity(intent)
@@ -33,6 +36,8 @@ class MainActivity : AppCompatActivity() {
 
         val btnCriar: Button = findViewById(R.id.btnCriar)
         btnCriar.setOnClickListener {
+            var mediaPlayer = MediaPlayer.create(this, R.raw.init)
+            mediaPlayer.start()
             val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
             finish()

@@ -39,6 +39,8 @@ class CreateActivity : AppCompatActivity() {
     }
 
     private fun voltarParaMain() {
+        var mediaPlayer = MediaPlayer.create(this, R.raw.init)
+        mediaPlayer.start()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
